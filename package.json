@@ -1,0 +1,20 @@
+{
+  "name": "websc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd packages/websc-front && npm start",
+    "install": "lerna bootstrap",
+    "build": "npm run build:front && npm run build build:speech",
+    "build:speech": "cd packages/websc-speech && npm run build",
+    "build:front": "cd packages/websc-front && npm run build",
+    "symlink:local": "learna link --force-local"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}
