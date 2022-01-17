@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .column {
+            border: 2px solid darkgrey;
+            float: left;
+            width: 50%;
+            padding: 10px;
+            background: lightgray;
+            height: 100vh;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="column">
+        <h3>Prediction</h3>
+        <button id="startListen">Start Listening</button>
+        <button id="stopListen">Stop Listening</button>
+        <div><h3>Status: </h3><span id="status"></span></div>
+        <div><h3>prediction: </h3><span id="prediction"></span></div>
+    </div>
+    <div class="column">
+        <h3>Training</h3>
+        <input id="wordToPredict" type="text">
+        <br>
+        <br>
+        <input id="fileInput" type="file" multiple>
+        <button id="predictFiles">Predict</button>
+        <button id="resetFiles">Reset</button>
+        <h2>Precision: <span id="filePrecision">0</span>%</h2>
+        <div id="filePredictions"><h3>Records:</h3></div>
+    </div>
+</div>
+<script src="public/stc.js"></script>
+</body>
+</html>

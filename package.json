@@ -4,12 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd packages/websc-front && npm start",
+    "start:demo": "cd packages/stc-demo && npm start",
     "install": "lerna bootstrap",
-    "build": "npm run build:front && npm run build build:speech",
-    "build:speech": "cd packages/websc-speech && npm run build",
-    "build:front": "cd packages/websc-front && npm run build",
-    "symlink:local": "learna link --force-local"
+    "symlink": "lerna link --force-local"
   },
   "keywords": [],
   "author": "",

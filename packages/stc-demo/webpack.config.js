@@ -18,11 +18,17 @@ module.exports = {
         static: './build'
     },
     plugins: [
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         { from: 'model', to: 'public/model' },
-        //     ]
-        // })
+        new HtmlWebpackPlugin({
+            title: 'Development',
+            template: 'index.html'
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                // { from: 'public', to: 'public' }
+                { from: '../websc-speech/build/bundle.js', to: 'public/stc.js'},
+                { from: '../websc-speech/model', to: 'public/model'},
+            ]
+        })
     ],
     resolve: {
         extensions: ['.ts', '.js'],
@@ -30,7 +36,6 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),
-        publicPath: path.resolve(__dirname, 'build'),
-        library: 'stc',
+        publicPath: path.resolve(__dirname, 'build')
     },
 };
