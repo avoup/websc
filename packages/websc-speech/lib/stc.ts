@@ -63,7 +63,6 @@ class STC extends EventTarget {
         let hasStarted = false;
         let lastIndex = 1024;
 
-
         this.processor.onaudioprocess = async ({inputBuffer}) => {
             const currentData = inputBuffer.getChannelData(0);
             const resultData = audioBuffer.getChannelData(0);
@@ -143,7 +142,7 @@ class STC extends EventTarget {
         this.handleStreamSync(this.userMedia, {type: 'stream', noiseDetection: true}, (data) => {
             const prediction = this.model.predict(this.getSpectrogram(data))
             const {index: result, precision} = this.getMaxIndex(prediction, params.threshold ?? 0.58)
-            let predictedWord = this.classes[result ?? this.classes.length - 1]
+            let predictedWord = this.classes[result ?? this.classes.length - 1];
 
             this.emit('predict', {predictedWord, precision})
         });

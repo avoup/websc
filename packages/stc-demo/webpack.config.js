@@ -24,7 +24,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                // { from: 'public', to: 'public' }
+                { from: 'public', to: 'public' },
                 { from: '../websc-speech/build/bundle.js', to: 'public/stc.js'},
                 { from: '../websc-speech/model', to: 'public/model'},
             ]
