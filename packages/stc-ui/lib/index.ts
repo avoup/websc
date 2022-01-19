@@ -118,7 +118,7 @@ export default class UI {
     position: absolute;
     top: -4px;
     left: -4px;
-    animation: pulsate infinite 1.5s;
+    animation: stc-pulsate infinite 1.5s;
 }`)
         styleSheet?.insertRule(`.stc-pulse-ring.delay{
 // animation-delay: 1s;
