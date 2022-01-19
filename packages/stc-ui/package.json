@@ -1,11 +1,11 @@
 {
-  "name": "stc-demo",
+  "name": "stc-ui",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Lasha Gogichaishvili <avoup.g@gmail.com>",
   "homepage": "https://github.com/avoup/websc#readme",
   "license": "ISC",
-  "main": "build/bundle.js",
+  "main": "lib/stc-ui.js",
   "directories": {
     "lib": "lib"
   },
@@ -17,9 +17,7 @@
     "url": "git+https://github.com/avoup/websc.git"
   },
   "scripts": {
-    "prepare": "cd ../stc-core && npm run build && cd ../stc-ui && npm run build && cd ../stc-demo && npm run build",
-    "build": "webpack",
-    "start": "webpack serve --open"
+    "build": "webpack"
   },
   "bugs": {
     "url": "https://github.com/avoup/websc/issues"

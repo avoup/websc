@@ -25,8 +25,9 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'public', to: 'public' },
-                { from: '../websc-speech/build/bundle.js', to: 'public/stc.js'},
-                { from: '../websc-speech/model', to: 'public/model'},
+                { from: '../stc-core/build/stc-bundle.js', to: 'public/stc.js'},
+                { from: '../stc-ui/build/stc-ui-bundle.js', to: 'public/stc-ui.js'},
+                { from: '../stc-core/model', to: 'public/model'},
             ]
         })
     ],

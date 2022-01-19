@@ -1,11 +1,11 @@
 {
-  "name": "stc-demo",
+  "name": "stc-core",
   "version": "1.0.0",
-  "description": "> TODO: description",
+  "description": "",
   "author": "Lasha Gogichaishvili <avoup.g@gmail.com>",
   "homepage": "https://github.com/avoup/websc#readme",
   "license": "ISC",
-  "main": "build/bundle.js",
+  "main": "dist/index.js",
   "directories": {
     "lib": "lib"
   },
@@ -17,11 +17,15 @@
     "url": "git+https://github.com/avoup/websc.git"
   },
   "scripts": {
-    "prepare": "cd ../stc-core && npm run build && cd ../stc-ui && npm run build && cd ../stc-demo && npm run build",
-    "build": "webpack",
+    "build": "npm run build:cdn && npm run build:module",
+    "build:cdn": "webpack",
+    "build:module": "tsc -p .",
     "start": "webpack serve --open"
   },
   "bugs": {
     "url": "https://github.com/avoup/websc/issues"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.12.0"
   }
 }

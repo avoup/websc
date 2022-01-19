@@ -2,5 +2,7 @@
 Install
 ```bash
 npm i 
-npm run install
+
+# Start demo
+npm run start:demo
 ```

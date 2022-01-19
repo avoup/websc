@@ -28,7 +28,7 @@ module.exports = {
         extensions: ['.ts', '.js'],
     },
     output: {
-        filename: 'bundle.js',
+        filename: 'stc-bundle.js',
         path: path.resolve(__dirname, 'build'),
         publicPath: path.resolve(__dirname, 'build'),
         library: 'stc',

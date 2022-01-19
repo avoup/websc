@@ -1,17 +1,38 @@
 {
-  "name": "websc",
+  "name": "stc",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start:demo": "cd packages/stc-demo && npm start",
-    "install": "lerna bootstrap",
-    "symlink": "lerna link --force-local"
-  },
-  "keywords": [],
-  "author": "",
+  "description": "> TODO: description",
+  "author": "Lasha Gogichaishvili <avoup.g@gmail.com>",
+  "homepage": "https://github.com/avoup/websc#readme",
   "license": "ISC",
+  "main": "build/bundle.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avoup/websc.git"
+  },
+  "scripts": {
+    "install": "lerna bootstrap",
+    "start:demo": "cd packages/stc-demo && npm start"
+  },
+  "bugs": {
+    "url": "https://github.com/avoup/websc/issues"
+  },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "@types/node": "^17.0.7",
+    "copy-webpack-plugin": "^10.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.2"
   }
 }
