@@ -108,7 +108,7 @@ const MODEL_URL = 'public/model/model.json';
     // Initialize speech recognition
     const stc = new STC();
     await stc.loadModel(MODEL_URL, classes);
-    stc.addEventListener('predict', ({detail}) => {
+    stc.addEventListener('onPrediction', ({detail}) => {
         const activator = (direction) => ACTIVE = changeActive(ACTIVE, direction, htmlElements)
         switch (detail.predictedWord) {
             case "მარცხნივ":

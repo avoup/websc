@@ -7,6 +7,7 @@ class STC extends EventTarget {
     private classes: String[] = [];
     private processor;
     private hasSound: boolean = false;
+    public threshold: number = 0.02;
 
     constructor() {
         super();
@@ -34,15 +35,30 @@ class STC extends EventTarget {
         return {index, precision}
     }
 
-    private isSilent = function(waveform, threshold) {
+    private isSilent = (waveform) => {
         for (let i = 0; i < waveform.length; i++) {
             const abs = Math.abs(waveform[i])
 
-            if (abs > threshold) {
+            if (abs > this.threshold) {
                 return false;
             }
         }
         return true;
+    }
+
+    private getUserMedia = async () => {
+        this.userMedia = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                sampleSize: 16,
+                channelCount: 1,
+                // noiseSuppression: true
+            },
+            video: false
+        })
+    }
+
+    private stopUserMedia = () => {
+        this.userMedia.getTracks().forEach(track => track.stop());
     }
 
     private onStream = (stream, options, cb) => {
@@ -66,7 +82,7 @@ class STC extends EventTarget {
         this.processor.onaudioprocess = async ({inputBuffer}) => {
             const currentData = inputBuffer.getChannelData(0);
             const resultData = audioBuffer.getChannelData(0);
-            const silent = this.isSilent(currentData, 0.02);
+            const silent = this.isSilent(currentData);
 
             if (silent && !hasStarted) {
                 this.soundDetected(false)
@@ -124,34 +140,27 @@ class STC extends EventTarget {
         const {index: result, precision} = this.getMaxIndex(prediction, 0.6)
         let predictedWord = this.classes[result ?? this.classes.length - 1]
 
-        this.emit('predict', {predictedWord, precision})
+        this.emit('onPrediction', {predictedWord, precision})
 
         URL.revokeObjectURL(file);
         audio.remove();
     }
 
     public listen = async (params?) => {
-        this.userMedia = await navigator.mediaDevices.getUserMedia({
-            audio: {
-                sampleSize: 16,
-                channelCount: 1,
-                // noiseSuppression: true
-            },
-            video: false
-        })
+        await this.getUserMedia();
         this.handleStreamSync(this.userMedia, {type: 'stream', noiseDetection: true}, (data) => {
             const prediction = this.model.predict(this.getSpectrogram(data))
             const {index: result, precision} = this.getMaxIndex(prediction, params.threshold ?? 0.58)
             let predictedWord = this.classes[result ?? this.classes.length - 1];
 
-            this.emit('predict', {predictedWord, precision})
+            this.emit('onPrediction', {predictedWord, precision})
         });
     }
 
     private soundDetected = (detected) => {
         if (this.hasSound === detected) return;
         this.hasSound = detected;
-        this.emit('noise', {noise: detected});
+        this.emit('onNoise', {noise: detected});
     }
 
     private emit = (eventName, data?) => {
@@ -159,8 +168,39 @@ class STC extends EventTarget {
     }
 
     public stop = async () => {
-        this.userMedia.getTracks().forEach(track => track.stop());
+        this.stopUserMedia()
         this.processor.disconnect();
+    }
+
+    public adjustNoise = async (time: number = 5000) => {
+        await this.getUserMedia();
+        const context = new AudioContext({sampleRate: 16000});
+
+        let source = context.createMediaStreamSource(this.userMedia);
+        const processor = context.createScriptProcessor(1024, 1, 1);
+
+        source.connect(processor);
+        processor.connect(context.destination);
+
+        let maxWave = 0;
+
+        processor.onaudioprocess = ({inputBuffer}) => {
+            const currentData = inputBuffer.getChannelData(0);
+            const max = currentData.reduce((last, curr) => {
+                if (Math.abs(curr) > last) return Math.abs(curr);
+                return last
+            }, 0);
+            if (max > maxWave) {
+                maxWave = max;
+            }
+        };
+
+        setTimeout(() => {
+            this.threshold = maxWave;
+            processor.disconnect()
+            this.stopUserMedia();
+            this.emit('onAdjustNoise', {data: maxWave})
+        }, time)
     }
 }
 

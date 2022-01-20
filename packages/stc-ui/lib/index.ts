@@ -4,6 +4,7 @@ export default class UI {
     private containerElement;
     private startButton;
     private stopButton;
+    private noiseProfileButton;
     private predictionElement;
     private micElement;
     private micPulseElement;
@@ -18,6 +19,7 @@ export default class UI {
         this.addStcListeners();
         // Set listeners
         this.startButton.addEventListener('click', this.onStart, {once: true});
+        this.noiseProfileButton.addEventListener('click', this.onAdjustNoise)
 
         document.body.appendChild(this.containerElement);
     }
@@ -28,11 +30,15 @@ export default class UI {
 
         this.startButton = document.createElement('button')
         this.startButton.className = 'stc-button stc-bg-blue';
-        this.startButton.innerText = 'Start';
+        this.startButton.innerText = '▶';
 
         this.stopButton = document.createElement('button')
         this.stopButton.className = 'stc-button';
-        this.stopButton.innerText = 'Stop';
+        this.stopButton.innerText = '■';
+
+        this.noiseProfileButton = document.createElement('button');
+        this.noiseProfileButton.className = 'stc-button stc-bg-blue';
+        this.noiseProfileButton.innerText = '∿'
 
         this.predictionElement = document.createElement('div');
         this.predictionElement.className = 'stc-inline-block'
@@ -47,6 +53,7 @@ export default class UI {
 
         this.containerElement.appendChild(this.startButton)
         this.containerElement.appendChild(this.stopButton)
+        this.containerElement.appendChild(this.noiseProfileButton)
         this.containerElement.appendChild(this.micElement)
         this.containerElement.appendChild(this.predictionElement)
     }
@@ -163,8 +170,12 @@ export default class UI {
     }
 
     private addStcListeners = () => {
-        this.stc.addEventListener('predict', this.onPrediction)
-        this.stc.addEventListener('noise', this.onNoise);
+        this.stc.addEventListener('onPrediction', this.onPrediction)
+        this.stc.addEventListener('onNoise', this.onNoise);
+        this.stc.addEventListener('onAdjustNoise', ({detail}) => {
+            this.noiseProfileButton.classList.add('stc-bg-blue')
+            console.log('noise: ', detail.data)
+        })
     }
 
     private onStart = () => {
@@ -174,6 +185,11 @@ export default class UI {
 
         this.stopButton.addEventListener('click', this.onStop, {once: true});
         this.stc.listen(this.listenParams)
+    }
+
+    private onAdjustNoise = () => {
+        this.noiseProfileButton.classList.remove('stc-bg-blue');
+        this.stc.adjustNoise();
     }
 
 }
